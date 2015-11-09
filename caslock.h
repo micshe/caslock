@@ -11,11 +11,7 @@ struct ptl_lock
 	unsigned char flag;
 	long count;
 }; 
-#if 0
-#define PTL_INIT { .file = stderr, .flag = 0, .count = 0 }
-#else
 #define PTL_INIT { .file = NULL, .flag = 0, .count = 0 }
-#endif
 
 struct caslock
 {
@@ -24,6 +20,12 @@ struct caslock
 	size_t length;
 };
 #define CASLOCK_INIT(x) { .lock = PTL_INIT, .buffer = (unsigned char*)x, .length = sizeof(x) }
+
+int mkcaslock(struct caslock*lock,void*buffer,size_t length);
+int rmcaslock(struct caslock*lock);
+int caslock(struct caslock*lock, void*iff,void*then,void*err, int timelimit);
+int chcaslock(struct caslock*lock,void*iff,void*then,void*err);
+int lscaslock(struct caslock*lock,void*val);
 
 #ifdef __cplusplus
 }
